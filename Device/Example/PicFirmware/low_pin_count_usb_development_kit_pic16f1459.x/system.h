@@ -25,7 +25,6 @@ please contact mla_licensing@microchip.com
 
 #include "buttons.h"
 #include "leds.h"
-#include "adc.h"
 
 #include "io_mapping.h"
 #include "fixed_address_memory.h"
@@ -34,7 +33,7 @@ please contact mla_licensing@microchip.com
 
 //Internal oscillator option setting.  Uncomment if using HFINTOSC+active clock 
 //tuning, instead of a crystal.  
-//#define USE_INTERNAL_OSC        //Make sure 1uF-8uF extra capacitance is added on VDD net
+#define USE_INTERNAL_OSC        //Make sure 1uF-8uF extra capacitance is added on VDD net
                                 //to smooth VDD ripple from MAX3232 chip, before using this
                                 //with the original Low Pin Count USB Development Kit board.
                                 //If using the latest version of the board, this is not

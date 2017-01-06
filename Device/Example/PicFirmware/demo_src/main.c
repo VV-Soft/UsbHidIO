@@ -24,7 +24,6 @@ please contact mla_licensing@microchip.com
 #include "usb_device_hid.h"
 
 #include "app_device_custom_hid.h"
-#include "app_led_usb_status.h"
 
 
 
@@ -34,7 +33,7 @@ MAIN_RETURN main(void)
 
     USBDeviceInit();
     USBDeviceAttach();
-
+    
     while(1)
     {
         SYSTEM_Tasks();
