@@ -21,7 +21,6 @@ please contact mla_licensing@microchip.com
 #include "system.h"
 #include "usb.h"
 #include "leds.h"
-#include "buttons.h"
 
 /** CONFIGURATION Bits **********************************************/
 // PIC16F1459 configuration bit settings:
@@ -93,8 +92,6 @@ void SYSTEM_Initialize( SYSTEM_STATE state )
                 OSCCON = 0xFC;  //HFINTOSC @ 16MHz, 3X PLL, PLL enabled
                 ACTCON = 0x90;  //Active clock tuning enabled for USB
             #endif
-            
-            BUTTON_Enable(BUTTON_USB_DEVICE_HID_CUSTOM);
             
             break;
             

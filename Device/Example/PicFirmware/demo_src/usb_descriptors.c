@@ -158,8 +158,8 @@ const USB_DEVICE_DESCRIPTOR device_dsc=
     0x00,                   // Subclass code
     0x00,                   // Protocol code
     USB_EP0_BUFF_SIZE,          // Max packet size for EP0, see usb_config.h
-    0x04D8,                 // Vendor ID
-    0x003F,                 // Product ID: Custom HID device demo
+    0x1209,                 // Vendor ID: pid.codes (originally InterBiometrics)
+    0x2345,                 // Product ID: VV-Soft Simple Generic USB HID IO
     0x0100,                 // Device release number in BCD format
     0x01,                   // Manufacturer string index
     0x02,                   // Product string index
@@ -177,7 +177,7 @@ const uint8_t configDescriptor1[]={
     1,                      // Index value of this configuration
     0,                      // Configuration string index
     _DEFAULT | _SELF,               // Attributes, see usb_device.h
-    50,                     // Max power consumption (2X mA)
+    5,                     // Max power consumption (2X mA)
 							
     /* Interface Descriptor */
     0x09,//sizeof(USB_INTF_DSC),   // Size of this descriptor in bytes
@@ -222,18 +222,24 @@ sizeof(sd000),USB_DESCRIPTOR_STRING,{0x0409
 }};
 
 //Manufacturer string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd001={
+//https://github.com/VV-Soft/UsbHidIO
+//(Change to your own name)
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[35];}sd001={
 sizeof(sd001),USB_DESCRIPTOR_STRING,
-{'M','i','c','r','o','c','h','i','p',' ',
-'T','e','c','h','n','o','l','o','g','y',' ','I','n','c','.'
-}};
+{'h','t','t','p','s',':','/','/','g','i',
+'t','h','u','b','.','c','o','m','/','V',
+'V','-','S','o','f','t','/','U','s','b',
+'H','i','d','I','O' }};
 
 //Product string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[22];}sd002={
+//Simple versatile Generic USB IO Sample
+//(Change to your own name)
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[38];}sd002={
 sizeof(sd002),USB_DESCRIPTOR_STRING,
-{'S','i','m','p','l','e',' ','H','I','D',' ',
-'D','e','v','i','c','e',' ','D','e','m','o'
-}};
+{'S','i','m','p','l','e',' ','v','e','r',
+ 's','a','t','i','l','e',' ','G','e','n',
+ 'e','r','i','c',' ','U','S','B',' ','I',
+ 'O',' ','S','a','m','p','l','e'}};
 
 //Class specific descriptor - HID 
 const struct{uint8_t report[HID_RPT01_SIZE];}hid_rpt01={

@@ -17,6 +17,6 @@ VV-Soft Usb Hid IO aims to offer a versatile protocol for creating multitude of 
 
 ## What's included
 - [Protocol definition](PROTOCOL.md)
-- [Sample device firmware](Device/Example/PicFirmware) using Microchip PIC16F1454 microcontroller (todo)
+- [Sample device firmware](Device/Example/PicFirmware) using Microchip PIC16F1454 microcontroller
 - [Sample device schematics](Device/Example/Schematics) using Microchip PIC16F1454 microcontroller
 - [Sample control application](Host/CsSample) for host in C# (todo)

@@ -20,6 +20,7 @@ please contact mla_licensing@microchip.com
 /** INCLUDES *******************************************************/
 #include "usb.h"
 #include "usb_device_hid.h"
+#include "io.h"
 
 #include <string.h>
 
@@ -55,9 +56,9 @@ volatile USB_HANDLE USBInHandle;
 /** DEFINITIONS ****************************************************/
 typedef enum
 {
-    COMMAND_TOGGLE_LED = 0x80,
-    COMMAND_GET_BUTTON_STATUS = 0x81,
-    COMMAND_READ_POTENTIOMETER = 0x37
+    COMMAND_GET_CAPABILITIES = 0x01,
+    COMMAND_GET_INPUTS = 0x02,
+    COMMAND_SET_OUTPUTS = 0x03,
 } CUSTOM_HID_DEMO_COMMANDS;
 
 /** FUNCTIONS ******************************************************/
@@ -128,51 +129,47 @@ void APP_DeviceCustomHIDTasks()
         //application software wants us to fulfill.
         switch(ReceivedDataBuffer[0])				//Look at the data the host sent, to see what kind of application specific command it sent.
         {
-            case COMMAND_TOGGLE_LED:  //Toggle LEDs command
-                LED_Toggle(LED_USB_DEVICE_HID_CUSTOM);
+            case COMMAND_GET_CAPABILITIES:  //Toggle LEDs command
+
+                if(!HIDTxHandleBusy(USBInHandle))
+                {
+                    //Echo back to the host PC the command we are fulfilling
+                    ToSendDataBuffer[0] = COMMAND_GET_CAPABILITIES;				
+
+                    ToSendDataBuffer[1] = 1;  //We have 1 input
+                    ToSendDataBuffer[2] = 1;  //We have 1 output
+                    ToSendDataBuffer[3] = 1;  //Output(s) supports H+L+Z
+                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],4);
+                }
                 break;
-            case COMMAND_GET_BUTTON_STATUS:  //Get push button state
+            case COMMAND_GET_INPUTS:  //Get input states
                 //Check to make sure the endpoint/buffer is free before we modify the contents
                 if(!HIDTxHandleBusy(USBInHandle))
                 {
-                    ToSendDataBuffer[0] = 0x81;				//Echo back to the host PC the command we are fulfilling in the first uint8_t.  In this case, the Get Pushbutton State command.
-                    if(BUTTON_IsPressed(BUTTON_USB_DEVICE_HID_CUSTOM) == false)	//pushbutton not pressed, pull up resistor on circuit board is pulling the PORT pin high
-                    {
-                            ToSendDataBuffer[1] = 0x01;
-                    }
-                    else									//sw3 must be == 0, pushbutton is pressed and overpowering the pull up resistor
-                    {
-                            ToSendDataBuffer[1] = 0x00;
-                    }
+                    //Echo back to the host PC the command we are fulfilling
+                    ToSendDataBuffer[0] = COMMAND_GET_INPUTS;			
+
+                    //Get inputs from IOs
+                    GetInputs(&ToSendDataBuffer[1]);
+
                     //Prepare the USB module to send the data packet to the host
-                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],64);
+                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],2);
                 }
                 break;
+            case COMMAND_SET_OUTPUTS:  //Set output states
+                SetOutputs(&ReceivedDataBuffer[1]);
 
-            case COMMAND_READ_POTENTIOMETER:	//Read POT command.  Uses ADC to measure an analog voltage on one of the ANxx I/O pins, and returns the result to the host
+                //Check to make sure the endpoint/buffer is free before we modify the contents
+                if(!HIDTxHandleBusy(USBInHandle))
                 {
-                    uint16_t pot;
+                    //Echo back to the host PC the command we are fulfilling
+                    ToSendDataBuffer[0] = COMMAND_SET_OUTPUTS;			
 
-                    //Check to make sure the endpoint/buffer is free before we modify the contents
-                    if(!HIDTxHandleBusy(USBInHandle))
-                    {
-                        //Use ADC to read the I/O pin voltage.  See the relevant HardwareProfile - xxxxx.h file for the I/O pin that it will measure.
-                        //Some demo boards, like the PIC18F87J50 FS USB Plug-In Module board, do not have a potentiometer (when used stand alone).
-                        //This function call will still measure the analog voltage on the I/O pin however.  To make the demo more interesting, it
-                        //is suggested that an external adjustable analog voltage should be applied to this pin.
-
-                        pot = ADC_Read10bit(ADC_CHANNEL_POTENTIOMETER);
-
-                        ToSendDataBuffer[0] = 0x37;  	//Echo back to the host the command we are fulfilling in the first uint8_t.  In this case, the Read POT (analog voltage) command.
-                        ToSendDataBuffer[1] = (uint8_t)pot; //LSB
-                        ToSendDataBuffer[2] = pot >> 8;     //MSB
-
-
-                        //Prepare the USB module to send the data packet to the host
-                        USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],64);
-                    }
+                    //Prepare the USB module to send the data packet to the host
+                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],1);
                 }
                 break;
+
         }
         //Re-arm the OUT endpoint, so we can receive the next OUT data packet 
         //that the host may try to send us.

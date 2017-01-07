@@ -1,4 +1,5 @@
 /*******************************************************************************
+Copyright 2017 VV-Soft Oy (www.vvsoft.fi)
 Copyright 2016 Microchip Technology Inc. (www.microchip.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,6 +34,8 @@ MAIN_RETURN main(void)
 
     USBDeviceInit();
     USBDeviceAttach();
+
+    InitializeIO();
     
     while(1)
     {

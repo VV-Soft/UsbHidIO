@@ -2,9 +2,6 @@
 <configurationDescriptor version="62">
 	<logicalFolder name="root" displayName="root" projectFiles="true">
 		<logicalFolder name="HeaderFiles" displayName="Header Files" projectFiles="true">
-			<logicalFolder name="f2" displayName="bsp" projectFiles="true">
-				<itemPath>C:/microchip/mla/v2016_11_07/bsp/low_pin_count_usb_development_kit/pic16f1459/buttons.h</itemPath>
-			</logicalFolder>
 			<logicalFolder name="f1" displayName="usb" projectFiles="true">
 				<itemPath>C:/microchip/mla/v2016_11_07/framework/usb/inc/usb.h</itemPath>
 				<itemPath>C:/microchip/mla/v2016_11_07/framework/usb/inc/usb_ch9.h</itemPath>
@@ -18,14 +15,11 @@
 			</logicalFolder>
 			<itemPath>system.h</itemPath>
 			<itemPath>fixed_address_memory.h</itemPath>
-			<itemPath>io_mapping.h</itemPath>
 			<itemPath>../demo_src/app_device_custom_hid.h</itemPath>
+			<itemPath>io.h</itemPath>
 		</logicalFolder>
 		<logicalFolder name="LinkerScript" displayName="Linker Files" projectFiles="true"/>
 		<logicalFolder name="SourceFiles" displayName="Source Files" projectFiles="true">
-			<logicalFolder name="bsp" displayName="bsp" projectFiles="true">
-				<itemPath>C:/microchip/mla/v2016_11_07/bsp/low_pin_count_usb_development_kit/pic16f1459/buttons.c</itemPath>
-			</logicalFolder>
 			<logicalFolder name="f2" displayName="usb" projectFiles="true">
 				<itemPath>C:/microchip/mla/v2016_11_07/framework/usb/src/usb_device.c</itemPath>
 				<itemPath>../demo_src/usb_descriptors.c</itemPath>
@@ -35,6 +29,7 @@
 			<itemPath>../demo_src/main.c</itemPath>
 			<itemPath>system.c</itemPath>
 			<itemPath>../demo_src/app_device_custom_hid.c</itemPath>
+			<itemPath>io.c</itemPath>
 		</logicalFolder>
 		<logicalFolder name="ExternalFiles" displayName="Important Files" projectFiles="false">
 			<itemPath>Makefile</itemPath>
