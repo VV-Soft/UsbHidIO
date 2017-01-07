@@ -1,5 +1,5 @@
 # UsbHidIO
-VV-Soft Usb Hid IO aims to offer a versatile protocol for creating multitude of I/O devices with a single VID/PID number (0x1209 / 0x2345). VID/PID pair
+VV-Soft Usb Hid IO aims to offer a versatile protocol for creating multitude of I/O devices with a single VID/PID number (0x1209 / 0x2345).
 
 ## Design goals
  - Simplicity
