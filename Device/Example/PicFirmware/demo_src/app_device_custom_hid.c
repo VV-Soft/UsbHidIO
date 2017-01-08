@@ -139,7 +139,7 @@ void APP_DeviceCustomHIDTasks()
                     ToSendDataBuffer[1] = 1;  //We have 1 input
                     ToSendDataBuffer[2] = 1;  //We have 1 output
                     ToSendDataBuffer[3] = 1;  //Output(s) supports H+L+Z
-                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],4);
+                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],64);
                 }
                 break;
             case COMMAND_GET_INPUTS:  //Get input states
@@ -153,7 +153,7 @@ void APP_DeviceCustomHIDTasks()
                     GetInputs(&ToSendDataBuffer[1]);
 
                     //Prepare the USB module to send the data packet to the host
-                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],2);
+                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],64);
                 }
                 break;
             case COMMAND_SET_OUTPUTS:  //Set output states
@@ -166,7 +166,7 @@ void APP_DeviceCustomHIDTasks()
                     ToSendDataBuffer[0] = COMMAND_SET_OUTPUTS;			
 
                     //Prepare the USB module to send the data packet to the host
-                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],1);
+                    USBInHandle = HIDTxPacket(CUSTOM_DEVICE_HID_EP, (uint8_t*)&ToSendDataBuffer[0],64);
                 }
                 break;
 
